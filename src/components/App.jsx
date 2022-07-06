@@ -13,36 +13,25 @@ const App = () => {
 
   const firstRender = useRef(true);
 
-   const addContact = (el) => {
+   const addContact = ({ name, number }) => {
     const searchName = contacts
       .map((contact) => contact.name)
-      .includes(el.name);
+      .includes(name);
 
     if (searchName) {
-      alert(`${el.name} is already in contacts`);
-    } else if (el.name.length === 0) {
+      alert(`${name} is already in contacts`);
+    } else if (name.length === 0) {
       alert("Fields must be filled!");
     } else {
       const contact = {
-        ...el,
-        id: uuidv4(),
-      };
+      id: uuidv4(),
+      name,
+      number,
+    };
 
       setContacts(prevState => [ ...prevState, contact]);
     }
   };
-
-  // function addContact({ name, number }) {
-  //   if (contacts.some(el => el.name === name)) {
-  //     return alert(`${name} is already in contacts.`);
-  //   }
-  //   const contact = {
-  //     id: uuidv4(),
-  //     name,
-  //     number,
-  //   };
-  //   setContacts(prevState => [ ...prevState, contact]);
-  // }
 
   const removeContact = contactId => {
     setContacts(contacts.filter(({ id }) => id !== contactId));
@@ -77,13 +66,6 @@ const App = () => {
       firstRender.current = false;
     }
   }, [contacts]);
-
-  // const componentDidUpdate(prevProps, prevState) {
-    
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
-  //   }
-  // }
 
     const visibleContacts = getVisibleContacts();
 
